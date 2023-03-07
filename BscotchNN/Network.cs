@@ -4,6 +4,7 @@ using System.IO;
 using BscotchNN.Activation;
 using BscotchNN.Error;
 using BscotchNN.Layers;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace BscotchNN
 {
@@ -82,11 +83,11 @@ namespace BscotchNN
             return OutputLayer.neurons.AsArray();
         }
 
-        public void Backpropagate(double[] errorDerivatives)
+        public void Backpropagate(Vector<double> errorDerivatives)
         {
             var outputLayer = OutputLayer;
 
-            if (errorDerivatives.Length != outputLayer.neurons.Count)
+            if (errorDerivatives.Count != outputLayer.neurons.Count)
                 throw new ArgumentException(
                     $"The length of {nameof(errorDerivatives)} must be the same as the number of output neurons",
                     nameof(errorDerivatives));
@@ -96,18 +97,18 @@ namespace BscotchNN
             for (var i = connectedLayers.Count - 2; i >= 0; i--) connectedLayers[i].Backward();
         }
 
-        public double Backpropagate(double[] expectedOutputs, IError error)
+        public double Backpropagate(Vector<double> expectedOutputs, IError error)
         {
             Layer outputLayer = OutputLayer;
 
-            if (expectedOutputs.Length != outputLayer.neurons.Count)
+            if (expectedOutputs.Count != outputLayer.neurons.Count)
                 throw new ArgumentException(
                     $"The length of {nameof(expectedOutputs)} must be the same as the number of output neurons",
                     nameof(expectedOutputs));
 
             // Calculate the last layer's error values and calculate loss
             double loss = 0;
-            var errorDerivatives = new double[expectedOutputs.Length];
+            var errorDerivatives = Vector<double>.Build.Dense(expectedOutputs.Count);
             for (var i = 0; i < outputLayer.neurons.Count; i++)
             {
                 loss += error.Calculate(outputLayer.neurons[i], expectedOutputs[i]);

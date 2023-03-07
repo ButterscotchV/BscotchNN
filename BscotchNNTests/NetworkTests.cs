@@ -3,6 +3,7 @@ using BscotchNN;
 using BscotchNN.Activation;
 using BscotchNN.Error;
 using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BscotchNNTests
@@ -64,14 +65,13 @@ namespace BscotchNNTests
                 var valY = GetOtherComponent(radius, valX);
 
                 var predictions = network.Propagate(new[] { valX, valY });
-                var loss = network.Backpropagate(new[] { radius * radius }, SquareError.Singleton);
+                var loss = network.Backpropagate(Vector<double>.Build.Dense(new[] { radius * radius }), SquareError.Singleton);
                 lossSum += loss;
                 lossCount++;
 
                 if (i % printEvery == 0)
                 {
-                    Console.WriteLine(
-                        $"Iter: {i}, In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
+                    Console.WriteLine($"Iter: {i}, In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
                     lossSum = 0.0d;
                     lossCount = 0;
                 }

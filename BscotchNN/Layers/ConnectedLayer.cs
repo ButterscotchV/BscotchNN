@@ -1,7 +1,6 @@
 using System;
 using BscotchNN.Activation;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace BscotchNN.Layers
 {
@@ -35,15 +34,15 @@ namespace BscotchNN.Layers
 
             this.dropout = dropout;
 
-            rawNeurons = DenseVector.OfArray(new double[numNeurons]);
+            rawNeurons = Vector<double>.Build.Dense(numNeurons);
 
             neuronBiases = new double[numNeurons];
             neuronErrors = new double[numNeurons];
 
-            connectionWeights = DenseMatrix.OfArray(new double[numNeurons, parent.neurons.Count]);
-            connectionErrors = DenseMatrix.OfArray(new double[numNeurons, parent.neurons.Count]);
+            connectionWeights = Matrix<double>.Build.Dense(numNeurons, parent.neurons.Count);
+            connectionErrors = Matrix<double>.Build.Dense(numNeurons, parent.neurons.Count);
 
-            outerProductCache = DenseMatrix.OfArray(new double[numNeurons, parent.neurons.Count]);
+            outerProductCache = Matrix<double>.Build.Dense(numNeurons, parent.neurons.Count);
         }
 
         private bool ShouldDropNeuron()

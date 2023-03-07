@@ -1,6 +1,5 @@
 using System;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace BscotchNN.Layers
 {
@@ -16,7 +15,7 @@ namespace BscotchNN.Layers
                 throw new ArgumentOutOfRangeException(nameof(numNeurons), numNeurons,
                     $"{nameof(numNeurons)} must be greater than 0");
 
-            neurons = DenseVector.OfArray(new double[numNeurons]);
+            neurons = Vector<double>.Build.Dense(numNeurons);
         }
     }
 }
