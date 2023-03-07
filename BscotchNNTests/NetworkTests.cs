@@ -39,10 +39,6 @@ namespace BscotchNNTests
             // Hidden layers
             network.MakeLayer(4, TanhActivation.Singleton);
             network.MakeLayer(16, TanhActivation.Singleton);
-            network.MakeLayer(128, TanhActivation.Singleton);
-            network.MakeLayer(128, TanhActivation.Singleton);
-            network.MakeLayer(128, TanhActivation.Singleton);
-            network.MakeLayer(128, TanhActivation.Singleton);
             network.MakeLayer(16, TanhActivation.Singleton);
             network.MakeLayer(2, TanhActivation.Singleton);
 
@@ -69,9 +65,10 @@ namespace BscotchNNTests
                 lossSum += loss;
                 lossCount++;
 
-                if (i % printEvery == 0)
+                var iter = i + 1;
+                if (iter <= 1 || iter % printEvery == 0)
                 {
-                    Console.WriteLine($"Iter: {i}, In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
+                    Console.WriteLine($"Iter: {iter}, In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
                     lossSum = 0.0d;
                     lossCount = 0;
                 }
