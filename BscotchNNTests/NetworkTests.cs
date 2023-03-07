@@ -47,36 +47,42 @@ namespace BscotchNNTests
 
             network.ApplyKaiserInit();
 
-            var numIters = 100000;
+            var numIters = 10000;
+            var numEpochs = 100;
 
-            var printEvery = numIters / 10;
-            var lossSum = 0.0d;
-            var lossCount = 0;
-
-            var learnRate = 0.1d;
+            var printEvery = numEpochs / 20;
+            
+            var learnRate = 0.5d;
+            var decayRate = 1.0d;
 
             var random = new Random();
-            for (var i = 0; i < numIters; i++)
+            for (var epoch = 0; epoch < numEpochs; epoch++)
             {
-                var radius = random.NextDouble();
+                var epochLearnRate = (1 / (1 + decayRate * epoch)) * learnRate;
 
-                var valX = random.NextDouble() * radius;
-                var valY = GetOtherComponent(radius, valX);
+                var lossSum = 0.0d;
+                var lossCount = 0;
 
-                var predictions = network.Propagate(new[] { valX, valY });
-                var loss = network.Backpropagate(Vector<double>.Build.Dense(new[] { radius * radius }), SquareError.Singleton);
-                lossSum += loss;
-                lossCount++;
-
-                var iter = i + 1;
-                if (iter <= 1 || iter % printEvery == 0)
+                for (var iter = 0; iter < numIters; iter++)
                 {
-                    Console.WriteLine($"Iter: {iter}/{numIters} ({(iter*100.0d)/numIters:0.00}%), In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
-                    lossSum = 0.0d;
-                    lossCount = 0;
+                    var radius = random.NextDouble();
+
+                    var valX = random.NextDouble() * radius;
+                    var valY = GetOtherComponent(radius, valX);
+
+                    var predictions = network.Propagate(new[] { valX, valY });
+                    var loss = network.Backpropagate(Vector<double>.Build.Dense(new[] { radius * radius }), SquareError.Singleton);
+                    lossSum += loss;
+                    lossCount++;
+
+                    network.ApplyErr(epochLearnRate);
                 }
 
-                network.ApplyErr(learnRate);
+                var curEpoch = epoch + 1;
+                if (curEpoch <= 1 || curEpoch % printEvery == 0)
+                {
+                    Console.WriteLine($"Epoch: {curEpoch}/{numEpochs} ({(curEpoch * 100.0d) / numEpochs:0.00}%), Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0):0.0#######}, LR: {epochLearnRate:0.0#######}");
+                }
             }
         }
     }
