@@ -60,7 +60,7 @@ namespace BscotchNNTests
             var random = new Random();
             for (var epoch = 0; epoch < numEpochs; epoch++)
             {
-                var epochLearnRate = (1 / (1 + decayRate * epoch)) * learnRate;
+                var epochLearnRate = learnRate / (1 + (decayRate * epoch));
 
                 var lossSum = 0.0d;
                 var lossCount = 0;
