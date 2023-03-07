@@ -68,7 +68,7 @@ namespace BscotchNNTests
                 var iter = i + 1;
                 if (iter <= 1 || iter % printEvery == 0)
                 {
-                    Console.WriteLine($"Iter: {iter}, In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
+                    Console.WriteLine($"Iter: {iter}/{numIters} ({(iter*100.0d)/numIters:0.00}%), In: [{valX}, {valY}], Out: {predictions[0]}, Loss: {(lossCount > 0 ? lossSum / lossCount : -1.0)}");
                     lossSum = 0.0d;
                     lossCount = 0;
                 }
