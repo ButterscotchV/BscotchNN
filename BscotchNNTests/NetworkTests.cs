@@ -50,10 +50,12 @@ namespace BscotchNNTests
             var numIters = 10000;
             var numEpochs = 100;
 
-            var printEvery = numEpochs / 20;
+            var batchSize = 10;
             
             var learnRate = 0.5d;
             var decayRate = 1.0d;
+
+            var printEvery = numEpochs / 20;
 
             var random = new Random();
             for (var epoch = 0; epoch < numEpochs; epoch++)
@@ -75,7 +77,9 @@ namespace BscotchNNTests
                     lossSum += loss;
                     lossCount++;
 
-                    network.ApplyErr(epochLearnRate);
+                    var curIter = iter + 1;
+                    if (curIter % batchSize == 0 || curIter >= numIters)
+                        network.ApplyErr(epochLearnRate);
                 }
 
                 var curEpoch = epoch + 1;
