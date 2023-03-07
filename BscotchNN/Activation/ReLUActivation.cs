@@ -1,8 +1,8 @@
 namespace BscotchNN.Activation
 {
-    public class ReluActivation : IActivation
+    public class ReLUActivation : IActivation
     {
-        public static readonly ReluActivation Singleton = new ReluActivation();
+        public static readonly ReLUActivation Singleton = new ReLUActivation();
 
         public double Calculate(double val)
         {

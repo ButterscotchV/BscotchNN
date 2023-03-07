@@ -1,12 +1,12 @@
 namespace BscotchNN.Activation
 {
-    public class LeakyReluActivation : IActivation
+    public class LeakyReLUActivation : IActivation
     {
-        public static readonly LeakyReluActivation Singleton = new LeakyReluActivation(0.01F);
+        public static readonly LeakyReLUActivation Singleton = new LeakyReLUActivation(0.01F);
 
         public readonly double leakRate;
 
-        public LeakyReluActivation(double leakRate)
+        public LeakyReLUActivation(double leakRate)
         {
             this.leakRate = leakRate;
         }
