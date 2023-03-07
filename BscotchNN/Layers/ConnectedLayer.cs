@@ -70,7 +70,7 @@ namespace BscotchNN.Layers
             }
         }
 
-        public void AddError(double[] errors)
+        public void AddError(Vector<double> errors)
         {
             // Pass the error to the neurons
             for (var i = 0; i < rawNeurons.Count; i++)
@@ -92,7 +92,7 @@ namespace BscotchNN.Layers
             if (child == null)
                 throw new NullReferenceException($"{nameof(child)} must be defined to propagate upstream");
 
-            AddError(child.connectionWeights.TransposeThisAndMultiply(child.rawNeurons).AsArray());
+            AddError(child.connectionWeights.TransposeThisAndMultiply(child.rawNeurons));
         }
 
         public void ApplyError(double learningRate)
@@ -104,7 +104,7 @@ namespace BscotchNN.Layers
                 neuronErrors[i] = 0;
             }
 
-            connectionErrors.Multiply(learningRate/numErrors, connectionErrors);
+            connectionErrors.Multiply(learningRate / numErrors, connectionErrors);
             connectionWeights.Subtract(connectionErrors, connectionWeights);
             connectionErrors.Clear();
 

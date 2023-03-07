@@ -3,7 +3,6 @@ using BscotchNN;
 using BscotchNN.Activation;
 using BscotchNN.Error;
 using MathNet.Numerics;
-using MathNet.Numerics.Random;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BscotchNNTests
