@@ -48,9 +48,12 @@ namespace BscotchNNTests
             network.ApplyKaiserInit();
 
             var numIters = 100000;
+
             var printEvery = numIters / 10;
             var lossSum = 0.0d;
             var lossCount = 0;
+
+            var learnRate = 0.1d;
 
             var random = new Random();
             for (var i = 0; i < numIters; i++)
@@ -73,7 +76,7 @@ namespace BscotchNNTests
                     lossCount = 0;
                 }
 
-                network.ApplyErr();
+                network.ApplyErr(learnRate);
             }
         }
     }
